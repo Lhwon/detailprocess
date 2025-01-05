@@ -10,6 +10,7 @@ interface LoginModalProps {
 const Login: React.FC<LoginModalProps> = ({ show, onLogin }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [alertLoginErr, setAlertLoginErr] = useState('')
 
   if (!show) return null
 
@@ -24,11 +25,11 @@ const Login: React.FC<LoginModalProps> = ({ show, onLogin }) => {
         const name = response.data.name
         onLogin(token, name) // 부모 컴포넌트로 로그인 성공 알림
       } else {
-        alert('로그인 실패: ' + (response.data?.error || '알 수 없는 오류'))
+        setAlertLoginErr('다시 입력해주세요.')
+        // alert('로그인 실패: ' + (response.data?.error || '알 수 없는 오류'))
       }
     } catch (err) {
       console.error('로그인 오류:', err)
-      alert('로그인 요청 중 오류가 발생했습니다.')
     }
   }
 
@@ -93,6 +94,18 @@ const Login: React.FC<LoginModalProps> = ({ show, onLogin }) => {
         >
           로그인
         </Button>
+        <Box sx={{ width: '100%', textAlign: 'center', display: 'flex' }}>
+          <Box sx={{ width: '50%', textAlign: 'center', cursor: 'pointer' }} onClick={(e) => { alert('찾기') } }>
+            <p style={{ color: 'grey' }}>찾기</p>
+          </Box>
+          <Box sx={{ width: '50%', textAlign: 'center', cursor: 'pointer' }} onClick={(e) => { alert('가입')} }>
+            <p style={{ color: 'grey' }}>가입</p>
+          </Box>
+        </Box>
+        {/* 로그인 정보가 잘못됬을 때 알림 */}
+        <Box sx={{ p:0, m:0 }}>
+        <p style={{ color: 'red' }}>{ alertLoginErr }</p>
+        </Box>
       </Box>
     </Box>
   )

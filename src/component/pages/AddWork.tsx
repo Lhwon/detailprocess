@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Typography, Box, Card, Button, Divider, TextField, Autocomplete } from '@mui/material'
 import Swal from 'sweetalert2'
 import commonSearchApi from 'api/commonApi'
-import commonCodeApi from 'api/commonCodeApi'
+import { commonCodeApi } from 'api/commonCodeApi'
 import dayjs from 'dayjs'
 
 const Main: React.FC = () => {
@@ -135,8 +135,8 @@ const Main: React.FC = () => {
           />
           <Autocomplete
             disablePortal
-            options={codeList.ORIGIN.length > 0 ? codeList.ORIGIN : []} // 빈 배열 처리
-            getOptionLabel={(option) => option.name || ''}  // name이 없을 때 빈 문자열 반환
+            options={Array.isArray(codeList.ORIGIN) && codeList.ORIGIN.length > 0 ? codeList.ORIGIN : []} // 배열인지 확인
+            getOptionLabel={(option) => option.name || ''} // name이 없을 때 빈 문자열 반환
             onChange={(event, newValue) => searchMenufacture(newValue?.code ?? '')} // code만 저장
             sx={{ width: '20%', ml: 1 }}
             renderInput={(params) => 
@@ -149,8 +149,8 @@ const Main: React.FC = () => {
           />
           <Autocomplete
             disablePortal
-            options={codeList.MANUFACTURE.length > 0 ? codeList.MANUFACTURE : []} // 빈 배열 처리
-            getOptionLabel={(option) => option.name || ''}  // name이 없을 때 빈 문자열 반환
+            options={Array.isArray(codeList.MANUFACTURE) && codeList.MANUFACTURE.length > 0 ? codeList.MANUFACTURE : []} // 배열인지 확인
+            getOptionLabel={(option) => option.name || ''} // name이 없을 때 빈 문자열 반환
             onChange={(event, newValue) => setCarManufacture(newValue?.code ?? '')} // code만 저장
             sx={{ width: '20%', ml: 1 }}
             renderInput={(params) => 

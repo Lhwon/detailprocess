@@ -6,11 +6,15 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
 import dayjs, { Dayjs } from 'dayjs'
+
+// API
 import commonSearchApi from 'api/commonApi'
-import commonCodeApi from 'api/commonCodeApi'
+import { commonCodeApi } from 'api/commonCodeApi'
+
+// imageFile
 import kiaMorning from '../../image/car/kia_morning.png'
 import kiaSorento from '../../image/car/kia_sorento.png'
-import { NullLiteral } from 'typescript'
+import licensePlate from '../../image/car/licensePlate.png'
 
 // WorkData 인터페이스 정의
 interface WorkData {
@@ -73,6 +77,7 @@ const Main: React.FC = () => {
 
   const headerVisible = ['work_id']
   const clickableColumns = ['no', 'car_number', 'car_type', 'work_status', 'work_type', 'worker']
+  const lookupColumns = ['work_status', 'work_type']
 
   const rowColor = (row: WorkData) => {
     let ret = ''
@@ -120,7 +125,6 @@ const Main: React.FC = () => {
         'work/workContent',
         { workCode: rowData.work_type }
       ).then(res => {
-        console.log('나와라 얍!', res)
         setSteps(res.data)
       })
     }
@@ -140,6 +144,7 @@ const Main: React.FC = () => {
           headerVisible={headerVisible}
           rows={dataRow}
           clickableColumns={clickableColumns}
+          lookupColumns={lookupColumns}
           rowColor={rowColor}
           onCellClick={onCellClick}
         />
@@ -157,13 +162,13 @@ const Main: React.FC = () => {
             src={kiaSorento}
             alt="Kia Sorento"
           />
-          <div>
-            <Chip 
-              label={chipCarNumber || "차량 번호 없음"}
-              color="warning"
-            />
-          </div>
         </Box>
+        <div style={{ width: '100%', justifyItems: 'center'}}>
+          <Box sx={{ width: '25%', height: '50px', border: '1px solid', borderRadius: '5px', textAlign: 'center', placeContent: 'center' }}>
+            <p style={{ fontSize: 'x-large', fontWeight: 'bold', margin: '0px' }}>{ chipCarNumber ? chipCarNumber.replace(/([가-힣])(?=\d)/g, '$1 ') : '' }</p>
+          </Box>
+          
+        </div>
         <Box sx={{ width: '100%', marginTop: '12px' }}>
           <Stepper activeStep={activeStep}>
             {steps.map((item, index) => (

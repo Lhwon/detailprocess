@@ -68,14 +68,14 @@ const Main2 : React.FC = () => {
           <p>작업 완료 시간</p>
           </Box>
           <Box sx={{ width: '60%' }}>
-            <p>2024-09-24 <Typography component="span" sx={{ color: 'blue' }}>15:35:15</Typography></p>
-            <p>2024-09-24 <Typography component="span" sx={{ color: 'blue' }}>15:36:01</Typography></p>
-            <p>2024-09-24 <Typography component="span" sx={{ color: 'blue' }}>15:39:12</Typography></p>
-            <p>2024-09-24 <Typography component="span" sx={{ color: 'blue' }}>15:47:21</Typography></p>
+            <p>2024-12-31 <Typography component="span" sx={{ color: 'blue' }}>15:35:15</Typography></p>
+            <p>2024-12-31 <Typography component="span" sx={{ color: 'blue' }}>15:36:01</Typography></p>
+            <p>2024-12-31 <Typography component="span" sx={{ color: 'blue' }}>15:39:12</Typography></p>
+            <p>2024-12-31 <Typography component="span" sx={{ color: 'blue' }}>15:47:21</Typography></p>
             <p>-</p>
-            <p>2024-09-24 <Typography component="span" sx={{ color: 'blue' }}>16:09:38</Typography></p>
-            <p>2024-09-24 <Typography component="span" sx={{ color: 'blue' }}>16:25:55</Typography></p>
-            <p>2024-09-24 <Typography component="span" sx={{ color: 'blue' }}>16:35:03</Typography></p>
+            <p>2024-12-31 <Typography component="span" sx={{ color: 'blue' }}>16:09:38</Typography></p>
+            <p>2024-12-31 <Typography component="span" sx={{ color: 'blue' }}>16:25:55</Typography></p>
+            <p>2024-12-31 <Typography component="span" sx={{ color: 'blue' }}>16:35:03</Typography></p>
           </Box>
         </Card>
         <Card sx={{ mt: 1, p: 1 }} variant="outlined">
@@ -147,6 +147,9 @@ const Main2 : React.FC = () => {
             드라잉 종료
           </Button>
         </Card>
+      </Box>
+      <Box sx={{ width: '20%', m: 0.5 }}>
+        
       </Box>
     </div>
   )

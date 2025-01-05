@@ -43,7 +43,7 @@ const App: React.FC = () => {
           </Routes>
         </Box>
         <Footer />
-        
+        {/*  */}
         {/* 로그인 팝업 */}
         <Login
           show={isLoginPopupOpen}

@@ -9,6 +9,8 @@ interface GridProps {
   clickableColumns?: string[]
   onCellClick?: (header: string, rowIndex: number, cellData: any) => void
   rowColor?: (row: any) => string // 동적 색상 지원
+  lookupData?: Record<string, any> 
+  lookupColumns?: string[]
 }
 
 const Grid: React.FC<GridProps> = ({ 
@@ -18,7 +20,9 @@ const Grid: React.FC<GridProps> = ({
   rows, 
   clickableColumns = [], 
   onCellClick, 
-  rowColor 
+  rowColor,
+  lookupData,
+  lookupColumns
 }) => {
   return (
     <TableContainer component={Paper}>
@@ -49,7 +53,7 @@ const Grid: React.FC<GridProps> = ({
                       onClick={isClickable && onCellClick ? () => onCellClick(header, rowIndex, row[header]) : undefined}
                       style={isClickable ? { cursor: 'pointer' } : undefined}
                     >
-                      {row[header]} 
+                      { lookupColumns && lookupData ? lookupData.txt : row[header] }
                     </TableCell>
                   )
                 )
