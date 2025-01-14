@@ -12,13 +12,13 @@ const App: React.FC = () => {
   const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(false) // 팝업 상태
 
   useEffect(() => {
-    const authToken = sessionStorage.getItem('authToken') // 세션에서 로그인 정보 확인
-    if (authToken) {
-      setIsLogin(true) // 로그인 상태로 설정
+    const storedData = sessionStorage.getItem('authToken');
+    if (storedData) {
+      setIsLogin(true); // 로그인 상태로 설정
     } else {
-      setIsLoginPopupOpen(true) // 로그인 팝업 열기
+      setIsLoginPopupOpen(true); // 로그인 팝업 열기
     }
-  }, [])
+  }, []);
 
   const handleLogin = (token: string) => {
     sessionStorage.setItem('authToken', token) // 세션 스토리지에 토큰 저장

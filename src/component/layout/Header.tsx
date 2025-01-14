@@ -1,44 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Box, AppBar, Button, Toolbar, IconButton, StepLabel, Chip, Divider } from '@mui/material'
+import { Typography, Box, AppBar, Button, Toolbar, IconButton, Menu, MenuItem, Chip, Divider } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
-import MenuIcon from '@mui/icons-material/Menu';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom';
-import routes from '../layout/route'; // routes 파일 import
-import { menuApi } from 'api/commonCodeApi'
-
+import routes from '../layout/route'; 
+import { menuApi } from 'api/commonCodeApi';
 import PersonInfo from 'component/popup/PersonInfo';
+import { userStore } from 'store/userStore'
 
 // 테스트 이미지 삭제 예정
-import testUser from '../../image/logo/testUser.png'
+import testUser from '../../image/logo/testUser.png';
 
 export default function Header() {
-  const [auth, setAuth] = React.useState(true);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [anchorEl2, setAnchorEl2] = React.useState<null | HTMLElement>(null);
+  const [auth, setAuth] = useState(true);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [anchorEl2, setAnchorEl2] = useState<null | HTMLElement>(null);
+  const [isPersonInfoOpen, setIsPersonInfoOpen] = useState(false); // 팝업 상태
+  const [menuList, setMenuList] = useState<Array<any>>([]);
+  const [user, setUser] = useState<{ token: string | null; name: string }>({ token: null, name: '' }); // 기본값을 공백 문자열로 설정
 
-  const [userNm, setUserNm] = React.useState(null)
+  useEffect(() => {
+    const storedData = sessionStorage.getItem('authToken');
+    const storedUser = userStore.getUser();
+    // setUser(storedUser || { token: null, name: null }); // 기본값 설정
 
-  const [isPersonInfoOpen, setIsPersonInfoOpen] = useState(false) // 팝업 상태
-
-  const [menuList, setMenuList] = React.useState<Array<any>>([])
+    getMenuInfo();
+  }, []);
 
   const getMenuInfo = async () => {
-    await menuApi().then(res => {
-      setMenuList(res) // 메뉴 리스트 상태 업데이트
-    }).catch(err => {
-      console.error('Error', err)
-    })
-
-    console.log('메뉴리스트', menuList)
-  }
-  
-  React.useEffect(() => {
-    const storedData = sessionStorage.getItem('authToken')
-    getMenuInfo()
-  }, [])
-  
+    try {
+      const res = await menuApi();
+      setMenuList(res);
+    } catch (err) {
+      console.error('Error', err);
+    }
+  };
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl2(event.currentTarget);
@@ -49,28 +44,18 @@ export default function Header() {
   };
 
   const handlePersonInfoClose = () => {
-    setIsPersonInfoOpen(false)
-  }
+    setIsPersonInfoOpen(false);
+  };
+
+  const handleLogout = () => {
+    // 사용자 로그아웃 처리
+    userStore.clearUser();
+    sessionStorage.clear()
+  };
 
   return (
     <AppBar position="static" style={{ backgroundColor: '#F5F7FA', color: '#3A3A3A' }}>
       <Toolbar>
-        <Menu
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-        >
-          {routes.map((route, index) => (
-            <MenuItem
-              key={index}
-              component={Link}
-              to={route.path}
-              onClick={handleClose}
-            >
-              {route.path.replace('/', '')} {/* 경로에서 '/' 제거하여 이름 표시 */}
-            </MenuItem>
-          ))}
-        </Menu>
         <Box sx={{ width: '100%' }} style={{ display: 'flex' }}>
           {/* 로고 */}
           <Box sx={{ width: '10%' }} style={{ display: 'flex', justifyContent: 'center' }}>
@@ -80,39 +65,40 @@ export default function Header() {
               </Typography>
             </Button>
           </Box>
-          
+
           {/* 메뉴 정보 출력 */}
-          <Box sx={{ width: '80%' }} style={{ display: 'flex' }}>
+          <Box sx={{ width: '80%' }} style={{ display: 'flex', justifyContent: 'center' }}>
             {menuList.map((item, index) => (
-              <Button color="inherit" component={Link} to={item.link}>
-                { item.menu_nm }
+              <Button key={index} color="inherit" component={Link} to={item.link}>
+                <p style={{ fontWeight: 'bold' }}>{item.menu_nm}</p>
               </Button>
             ))}
           </Box>
-          
-          {/* 로그인 정보가 유효할 때 출력(사용자 정보) */}
-          <Box sx={{ width: '10%' }} style={{ textAlign: 'right' }}>
+
+          {/* 로그인 정보 출력 (사용자 정보) */}
+          <Box sx={{ width: '10%' }} style={{ textAlign: 'right', alignSelf: 'center' }}>
             <IconButton sx={{ color: 'gray' }} size="large" onClick={handleMenu}>
-              <PersonIcon/>
+              <PersonIcon />
             </IconButton>
             <Menu
               id="userInfoBar"
               anchorEl={anchorEl2}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'center',
-              }}
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
               keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'center',
-              }}
+              transformOrigin={{ vertical: 'top', horizontal: 'center' }}
               open={Boolean(anchorEl2)}
               onClose={handleClose}
             >
-              <Box sx={{ width: '200px'}} style={{ textAlign: 'center' }}>
+              <Box sx={{ width: '200px' }} style={{ textAlign: 'center' }}>
                 {/* 사용자 이미지 */}
-                <Box sx={{ p: 1, width: '90%', height: '150px', justifySelf: 'center' }}>
+                <Box
+                  sx={{
+                    p: 1,
+                    width: '90%',
+                    height: '150px',
+                    justifySelf: 'center',
+                  }}
+                >
                   <Box
                     component="img"
                     sx={{
@@ -120,39 +106,38 @@ export default function Header() {
                       width: '100%',
                       borderRadius: '4px',
                       objectFit: 'cover',
-                      border: '1px solid grey'
+                      border: '1px solid grey',
                     }}
                     src={testUser}
-                    alt="BangBang"
+                    alt="User Image"
                   />
                 </Box>
                 {/* 사용자 이름 */}
                 <Box sx={{ px: 1 }} style={{ textAlign: 'center' }}>
-                  <Chip label="빵빵이" color="warning"/>
-                </Box> 
-                <Divider sx={{ pb: 1 }}/>
+                  <Chip label={sessionStorage.getItem("name") || '로그인하세요'} color="warning" />
+                </Box>
+                <Divider sx={{ pb: 1 }} />
                 {/* 버튼 내용 */}
-                <MenuItem 
-                  sx={{ justifyContent: "center" }} 
-                  onClick={el => {
+                <MenuItem
+                  sx={{ justifyContent: 'center' }}
+                  onClick={(el) => {
                     setIsPersonInfoOpen(true);
-                    handleClose() 
-                    }
-                  }
+                    handleClose();
+                  }}
                 >
                   <p style={{ margin: '0px' }}>내정보</p>
                 </MenuItem>
-                <MenuItem sx={{ justifyContent: "center" }}>
+                <MenuItem
+                  sx={{ justifyContent: 'center' }}
+                  onClick={handleLogout} // 로그아웃 버튼 클릭 시 처리
+                >
                   <p style={{ margin: '0px' }}>로그아웃</p>
                 </MenuItem>
               </Box>
             </Menu>
           </Box>
         </Box>
-        <PersonInfo
-          show={isPersonInfoOpen}
-          onClose={handlePersonInfoClose}
-        />
+        <PersonInfo show={isPersonInfoOpen} onClose={handlePersonInfoClose} />
       </Toolbar>
     </AppBar>
   );

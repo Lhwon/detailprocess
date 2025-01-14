@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Box, Button, TextField, Typography } from '@mui/material'
 import { login } from 'api/auth'
+import { userStore } from 'store/userStore'
 
 interface LoginModalProps {
   show: boolean
@@ -16,17 +17,19 @@ const Login: React.FC<LoginModalProps> = ({ show, onLogin }) => {
 
   const handleSubmit = async () => {
     try {
-      const response = await login('users/login', { id: username, password })
-      
-      console.log('response', response)
+      const res = await login('users/login', { id: username, password })
 
-      if (response.status === 200) {
-        const token = response.data.token // 백엔드에서 받은 토큰
-        const name = response.data.name
+      if (res.status === 200) {
+        const token = res.data.token
+        const name = res.data.user.name
+
+        sessionStorage.setItem('name', name)
+        // userStore에 로그인 정보를 저장
+        userStore.setUser(token, name);
+        
         onLogin(token, name) // 부모 컴포넌트로 로그인 성공 알림
       } else {
         setAlertLoginErr('다시 입력해주세요.')
-        // alert('로그인 실패: ' + (response.data?.error || '알 수 없는 오류'))
       }
     } catch (err) {
       console.error('로그인 오류:', err)
@@ -52,7 +55,7 @@ const Login: React.FC<LoginModalProps> = ({ show, onLogin }) => {
           width: '300px',
           backgroundColor: '#fff',
           padding: '20px',
-          borderRadius: '8px',
+          borderRadius: '5px',
           textAlign: 'center',
         }}
       >
@@ -68,7 +71,7 @@ const Login: React.FC<LoginModalProps> = ({ show, onLogin }) => {
           onChange={(e) => setUsername(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
-              handleSubmit() // 엔터 키 입력 시 실행
+              handleSubmit()
             }
           }}
         />
@@ -82,7 +85,7 @@ const Login: React.FC<LoginModalProps> = ({ show, onLogin }) => {
           onChange={(e) => setPassword(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
-              handleSubmit() // 엔터 키 입력 시 실행
+              handleSubmit()
             }
           }}
         />
@@ -102,7 +105,6 @@ const Login: React.FC<LoginModalProps> = ({ show, onLogin }) => {
             <p style={{ color: 'grey' }}>가입</p>
           </Box>
         </Box>
-        {/* 로그인 정보가 잘못됬을 때 알림 */}
         <Box sx={{ p:0, m:0 }}>
         <p style={{ color: 'red' }}>{ alertLoginErr }</p>
         </Box>
