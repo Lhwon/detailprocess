@@ -10,7 +10,8 @@ const Setting: React.FC = () => {
   const settingList = [
     { code: 'M', name: '메뉴관리' },
     { code: 'CC', name: '공통코드' },
-    { code: 'AT', name: '권한 관리' }
+    { code: 'AT', name: '권한 관리' },
+    { code: 'CMM', name: '차량 모델 관리' },
   ]
 
   const [selectedMenu, setSelectedMenu] = useState('M')
@@ -42,7 +43,7 @@ const Setting: React.FC = () => {
             ))}
           </Box>
         </Box>
-        <Box sx={{ width: '80%', ml:1, px: 1, borderRadius: '5px', backgroundColor: '#e0e0e0' }}>
+        <Box sx={{ width: '80%', ml:1, px: 1, borderRadius: '5px' }}>
           { selectedMenu === 'M' ? (<MenuManagement />) : <></>}
           { selectedMenu === 'CC' ? (<CodeManagement />) : <></>}
           { selectedMenu === 'AT' ? (<AuthManagement />) : <></>}

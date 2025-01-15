@@ -22,11 +22,11 @@ const MenuManagement: React.FC = () => {
   // 초기실행
   useEffect(() => {
     searchData()
-  })
+  }, [])
 
   // 데이터 조회
-  const searchData = () => {
-    commonSearchApi('common/getMenu', {}).then(res => {
+  const searchData = async () => {
+    await commonSearchApi('common/getMenu', {}).then(res => {
       setDataRow(res.data)
     })
   }
@@ -55,10 +55,7 @@ const MenuManagement: React.FC = () => {
   
   // 셀 클릭 이벤트
   const onCellClick = (header: string, rowIndex: number, cellData: any) => {
-    // const newData: MenuData = dataRow[rowIndex]
-
     const newData: { no: string; menu_cd: string; menu_nm: string; link: string; authority: string } = dataRow[rowIndex]
-    console.log('newData', newData)
 
     setMenuData({
       ...menuData,
@@ -71,6 +68,18 @@ const MenuManagement: React.FC = () => {
     
   }
 
+  // inputForm 초기화
+  const clearInputForm = async () => {
+    setMenuData({
+      ...menuData,
+      no: '',
+      menu_cd: '',
+      menu_nm: '',
+      component: '',
+      authority: '',
+    })
+  }
+
   // 데이터 저장
   const btnSave = () => {
     Swal.fire({
@@ -81,10 +90,37 @@ const MenuManagement: React.FC = () => {
       cancelButtonText: '취소',
     }).then((result) => {
       if (result.isConfirmed) {
-        commonSearchApi('common/createMenu', [menuData]).then(res => {
+        commonSearchApi('common/createMenu', [menuData]).then(async res => {
           if (res.status === 200) {
             Swal.fire('저장 완료!', '변경 사항이 저장되었습니다.', 'success')
+            await searchData() // 그리드 조회
+            clearInputForm()   // inputForm 초기화
           } else {
+            console.error('err', res)
+          }
+        }).catch(err => {
+          Swal.fire('Error', err, 'error')
+        })
+      }
+    });
+  }
+
+  // 데이터 삭제
+  const btnDelete = () => {
+    Swal.fire({
+      title: '삭제하시겠습니까?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: '삭제',
+      cancelButtonText: '취소',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        commonSearchApi('common/deleteMenu', [menuData]).then(async res => {
+          if (res.status === 200) {} else {
+            Swal.fire('삭제 완료!', '삭제되었습니다.', 'success')
+            await searchData() // 그리드 조회
+            clearInputForm()   // inputForm 초기화
+          
             console.error('err', res)
           }
         }).catch(err => {
@@ -110,7 +146,8 @@ const MenuManagement: React.FC = () => {
         </Box>
         {/* 메뉴 등록 */}
         <Box sx={{ width: '50%' }}>
-          <Card 
+          <Card
+          variant="outlined"
             sx={{
               height: '77vh',
               ml: 1,
@@ -131,8 +168,8 @@ const MenuManagement: React.FC = () => {
                 <label>메뉴 등록</label>
               </Box>
               <Box sx={{ display: 'flex' }}>
-                <Button variant="contained" sx={{ mr: 1 }}>신규</Button>
-                <Button variant="contained" color="error" sx={{ mr: 1, backgroundColor: '#f44336' }}>삭제</Button>
+                <Button variant="contained" sx={{ mr: 1 }} onClick={clearInputForm}>신규</Button>
+                <Button variant="contained" color="error" sx={{ mr: 1, backgroundColor: '#f44336' }} onClick={btnDelete}>삭제</Button>
                 <Button variant="contained" onClick={btnSave}>저장</Button>
               </Box>
             </Box>

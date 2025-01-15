@@ -58,12 +58,23 @@ export default function Header() {
       <Toolbar>
         <Box sx={{ width: '100%' }} style={{ display: 'flex' }}>
           {/* 로고 */}
-          <Box sx={{ width: '10%' }} style={{ display: 'flex', justifyContent: 'center' }}>
-            <Button color="inherit" component={Link} to="/main">
-              <Typography variant="h6" style={{ flexGrow: 1 }}>
-                HW Solution
-              </Typography>
-            </Button>
+          <Box 
+            sx={{ 
+              width: '10%', 
+              display: 'flex', 
+              justifyContent: 'center',
+              textDecoration: 'none',
+              color: 'inherit',
+              alignItems: 'center'
+            }} 
+            component={Link} 
+            to="/main"
+          >
+            {/* <p style={{ fontSize: '20px', fontWeight: 'bold', margin: 0 }}>▷ itVeloCare IVC</p> */}
+            <Box sx={{ width: '90%', }}>
+              <p style={{ fontSize: '26px', fontWeight: 'bold', margin: 0 }}>I V C</p>
+              <p style={{ fontSize: '12px', fontWeight: 'bold', margin: 0 }}>itVeloCare</p>
+            </Box>
           </Box>
 
           {/* 메뉴 정보 출력 */}

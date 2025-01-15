@@ -25,7 +25,7 @@ const Grid: React.FC<GridProps> = ({
   lookupColumns
 }) => {
   return (
-    <TableContainer component={Paper}>
+    <TableContainer variant="outlined" component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="translated table">
         <TableHead>
           <TableRow>
