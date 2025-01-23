@@ -120,7 +120,7 @@ const Main: React.FC = () => {
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center' }}>
-      <Card sx={{ width: '60%' }}>
+      <Card sx={{ width: '60%' }} variant='outlined'>
         <Typography variant="h6" sx={{ p: 1 }}>
           작업 차량 등록
         </Typography>

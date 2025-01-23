@@ -13,6 +13,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const storedData = sessionStorage.getItem('authToken');
+
     if (storedData) {
       setIsLogin(true); // 로그인 상태로 설정
     } else {
@@ -28,6 +29,16 @@ const App: React.FC = () => {
 
   return (
     <Router>
+      {!isLogin ? (
+      // 로그인 화면
+      <Box sx={{ m:0, p:0, display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+        <Login
+          show={isLoginPopupOpen}
+          onLogin={handleLogin} // 로그인 성공 핸들러
+        />
+      </Box>
+      ) : (
+      // 본 메인 화면 
       <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         <CssBaseline />
         <Header />
@@ -43,13 +54,9 @@ const App: React.FC = () => {
           </Routes>
         </Box>
         <Footer />
-        {/*  */}
-        {/* 로그인 팝업 */}
-        <Login
-          show={isLoginPopupOpen}
-          onLogin={handleLogin} // 로그인 성공 핸들러
-        />
       </Box>
+    )}
+      
     </Router>
   )
 }

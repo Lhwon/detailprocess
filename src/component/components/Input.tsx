@@ -64,7 +64,7 @@ const Input: React.FC<InputProps> = ({
   };
 
   return (
-    <div style={{ width: '100%', display: labelTop ? 'block' : 'flex', marginTop: mt ? mt * 4 + 'px' : '0px'}}>
+    <div style={{ width: '100%', display: labelTop ? 'block' : 'flex', marginTop: mt ? mt * 4 + 'px' : '0px', justifyContent: 'center' }}>
       {/* Label */}
       {label && (
         <div style={{ width: labelWidth, alignContent: 'center' }}>

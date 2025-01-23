@@ -147,7 +147,7 @@ const MenuManagement: React.FC = () => {
         {/* 메뉴 등록 */}
         <Box sx={{ width: '50%' }}>
           <Card
-          variant="outlined"
+            variant="outlined"
             sx={{
               height: '77vh',
               ml: 1,
@@ -176,7 +176,7 @@ const MenuManagement: React.FC = () => {
             <Divider sx={{ mt:1 }}/>
 
             {/* InputForm */}
-            <Box sx={{ width: '100%', mt:2, alignItems: 'center' }}>
+            <Box sx={{ width: '100%', mt:2 }}>
               <Input 
                 label="순번"
                 type="number"

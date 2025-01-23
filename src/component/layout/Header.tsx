@@ -1,57 +1,60 @@
-import React, { useState, useEffect } from 'react';
-import { Typography, Box, AppBar, Button, Toolbar, IconButton, Menu, MenuItem, Chip, Divider } from '@mui/material';
-import PersonIcon from '@mui/icons-material/Person';
-import { Link } from 'react-router-dom';
-import routes from '../layout/route'; 
-import { menuApi } from 'api/commonCodeApi';
-import PersonInfo from 'component/popup/PersonInfo';
+import React, { useState, useEffect } from 'react'
+import { Typography, Box, AppBar, Button, Toolbar, IconButton, Menu, MenuItem, Chip, Divider } from '@mui/material'
+import PersonIcon from '@mui/icons-material/Person'
+import { Link } from 'react-router-dom'
+import routes from '../layout/route'
+import { menuApi } from 'api/commonCodeApi'
+import PersonInfo from 'component/popup/PersonInfo'
 import { userStore } from 'store/userStore'
 
 // 테스트 이미지 삭제 예정
-import testUser from '../../image/logo/testUser.png';
+import testUser from '../../image/logo/testUser.png'
 
 export default function Header() {
-  const [auth, setAuth] = useState(true);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [anchorEl2, setAnchorEl2] = useState<null | HTMLElement>(null);
-  const [isPersonInfoOpen, setIsPersonInfoOpen] = useState(false); // 팝업 상태
-  const [menuList, setMenuList] = useState<Array<any>>([]);
-  const [user, setUser] = useState<{ token: string | null; name: string }>({ token: null, name: '' }); // 기본값을 공백 문자열로 설정
+  const [auth, setAuth] = useState(true)
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const [anchorEl2, setAnchorEl2] = useState<null | HTMLElement>(null)
+  const [isPersonInfoOpen, setIsPersonInfoOpen] = useState(false) // 팝업 상태
+  const [menuList, setMenuList] = useState<Array<any>>([])
+  const [user, setUser] = useState<{ token: string | null; name: string }>({ token: null, name: '' }) // 기본값을 공백 문자열로 설정
 
   useEffect(() => {
-    const storedData = sessionStorage.getItem('authToken');
-    const storedUser = userStore.getUser();
+    const storedData = sessionStorage.getItem('authToken')
+    const storedUser = userStore.getUser()
     // setUser(storedUser || { token: null, name: null }); // 기본값 설정
 
-    getMenuInfo();
-  }, []);
+    getMenuInfo()
+  }, [])
 
   const getMenuInfo = async () => {
     try {
-      const res = await menuApi();
-      setMenuList(res);
+      const res = await menuApi()
+      setMenuList(res)
     } catch (err) {
-      console.error('Error', err);
+      console.error('Error', err)
     }
-  };
+  }
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl2(event.currentTarget);
-  };
+    setAnchorEl2(event.currentTarget)
+  }
 
   const handleClose = () => {
-    setAnchorEl2(null);
-  };
+    setAnchorEl2(null)
+  }
 
   const handlePersonInfoClose = () => {
-    setIsPersonInfoOpen(false);
-  };
+    setIsPersonInfoOpen(false)
+  }
 
   const handleLogout = () => {
     // 사용자 로그아웃 처리
-    userStore.clearUser();
+    userStore.clearUser()
     sessionStorage.clear()
-  };
+
+    // 페이지 새로고침
+    window.location.reload()
+  }
 
   return (
     <AppBar position="static" style={{ backgroundColor: '#F5F7FA', color: '#3A3A3A' }}>
@@ -132,8 +135,8 @@ export default function Header() {
                 <MenuItem
                   sx={{ justifyContent: 'center' }}
                   onClick={(el) => {
-                    setIsPersonInfoOpen(true);
-                    handleClose();
+                    setIsPersonInfoOpen(true)
+                    handleClose()
                   }}
                 >
                   <p style={{ margin: '0px' }}>내정보</p>
@@ -151,5 +154,5 @@ export default function Header() {
         <PersonInfo show={isPersonInfoOpen} onClose={handlePersonInfoClose} />
       </Toolbar>
     </AppBar>
-  );
+  )
 }

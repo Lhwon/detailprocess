@@ -23,7 +23,7 @@ const Setting: React.FC = () => {
     <div>
       {/* 조회조건 */}
       <Box sx={{ width: '100%', display: 'flex' }}>
-        <Box sx={{ width: '20%', height: '85vh', borderRadius: '5px', backgroundColor: '#e0e0e0' }}>
+        <Card variant="outlined" sx={{ width: '20%', height: '85vh', borderRadius: '5px', backgroundColor: '#F0F0F0' }}>
           <Box sx={{ width: '100%', p: 1 }}>
             <p>설정</p>
             { settingList.map((item, index) => (
@@ -31,7 +31,8 @@ const Setting: React.FC = () => {
                 sx={{ 
                   width: '100%',
                   my: 1,
-                  backgroundColor: selectedMenu === item.code ? '#d2d2d2' : '#FFFFFF' ,
+                  backgroundColor: selectedMenu === item.code ? '#CFCFCF' : '#FFFFFF',
+                  color: selectedMenu === item.code ? '#FFFFFF' : '#000000',
                   borderRadius: '5px',
                   textAlign: 'center',
                   cursor: 'pointer'
@@ -42,12 +43,12 @@ const Setting: React.FC = () => {
               </Box>
             ))}
           </Box>
-        </Box>
-        <Box sx={{ width: '80%', ml:1, px: 1, borderRadius: '5px' }}>
+        </Card>
+        <Card variant="outlined" sx={{ width: '80%', ml:1, px: 1, borderRadius: '5px' }}>
           { selectedMenu === 'M' ? (<MenuManagement />) : <></>}
           { selectedMenu === 'CC' ? (<CodeManagement />) : <></>}
           { selectedMenu === 'AT' ? (<AuthManagement />) : <></>}
-        </Box>
+        </Card>
       </Box>
     </div>
   )
